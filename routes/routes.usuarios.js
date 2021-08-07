@@ -6,6 +6,16 @@ const cors = require('cors')
 //Exportamos nuestros modulos
 
 module.exports = async (app)=> {
+    app.get('/ping', (req,res)=>{
+        //Si llegamos hasta aca devolvemos el pong
+        try{
+            res.status(200).json('pong')
+        }catch (err) {
+            console.log(err)
+            res.status(500).json('Algo raro paso en este ping pong')
+        }
+    })
+    
     app.post('/nuevousuario', async (req,res)=>{
         let usuario = req.body
         try{
@@ -27,7 +37,7 @@ module.exports = async (app)=> {
             let resultado = await servicesUsuarios.chequearUsrValido(usuario)
             if (resultado) {
                 let validacion = await servicesUsuarios.generaToken(usuario)
-                res.json(validacion)
+                res.json({token: validacion})
             }
         }catch (err){
             console.log(err)
